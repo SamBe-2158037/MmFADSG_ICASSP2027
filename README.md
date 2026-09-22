@@ -60,8 +60,8 @@ S, objective, groups_in_S, soft_min = ssg_pp(
 
 Open `plot_reg_path.ipynb` from the repository root and run the imports, then any section:
 
-| Section | What it does | Time |
-|---|---|---|
+| Section | What it does |
+|---|---|
 | Reproduce Tables 1-3 | prints the SSG++ columns of Tables 1, 2 and 3 
 | Run your own experiment | one dataset at a $\lambda$, $\mu$, $t$ and $T$ of your choice 
 | Regularization path | a $\lambda$ grid up to the first perfectly balanced solution 
