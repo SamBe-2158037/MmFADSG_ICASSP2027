@@ -1,0 +1,270 @@
+\documentclass{article}
+\usepackage{amsmath,graphicx,hyperref}
+\usepackage{amsthm}
+
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{booktabs,cite}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage{subcaption}
+\usepackage{lipsum}
+\usepackage{enumitem}
+\makeatletter
+\renewcommand{\theALG@line}{\arabic{ALG@line}}
+\makeatother
+
+% % \usepackage[style=ieee,maxnames=3,minnames=3]{biblatex}
+% \usepackage[style=ieee]{biblatex}
+% \addbibresource{references.bib}  % your .bib file
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+% \theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+
+\newtheorem{problem}[theorem]{Problem}
+
+% \theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+
+%% Aritra's commands
+\def \setA{\mathcal{A}}
+\def \setB{\mathcal{B}}
+\def \setC{\mathcal{C}}
+\def \setD{\mathcal{D}}
+\def \setF{\mathcal{F}}
+\def \setI{\mathcal{I}}
+\def \setL{\mathcal{L}}
+\def \setP{\mathcal{P}}
+\def \setG{\mathcal{G}}
+\def \setN{\mathcal{N}}
+\def \setS{\mathcal{S}}
+\def \setV{\mathcal{V}}
+\def \setX{\mathcal{X}}
+\def \setY{\mathcal{Y}}
+\def \setE{\mathcal{E}}
+\def \setM{\mathcal{M}}
+\def \setT{\mathcal{T}}
+
+
+\def \vd{{\mathbf d}}
+\def \ve{{\mathbf e}}
+\def \vf{{\mathbf f}}
+\def \vw{{\mathbf w}}
+\def \vx{{\mathbf x}}
+\def \vy{{\mathbf y}}
+\def \vz{{\mathbf z}}
+
+\def \vA{{\mathbf A}}
+\def \vB{{\mathbf B}}
+\def \vI{{\mathbf I}}
+\def \vL{{\mathbf L}}
+\def \vQ{{\mathbf Q}}
+
+%% Manos' commands
+\DeclareMathOperator*{\argmax}{argmax} % FOR ARGMAX
+\DeclareMathOperator*{\argmin}{argmin} % FOR ARGMIN
+
+%% Alexander's commands
+\DeclareMathOperator*\minimize{minimize}
+\DeclareMathOperator*\maximize{maximize}
+\DeclareMathOperator\stt{subject\ to}
+\DeclareMathOperator\st{s.t.}
+
+\DeclareMathOperator{\infconv}{\boxplus}
+\DeclareMathOperator{\infdeconv}{\boxminus}
+
+\DeclareMathOperator{\gph}{gph}
+\DeclareMathOperator{\Exp}{Exp}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\diag}{Diag}
+\DeclareMathOperator{\epi}{epi}
+\DeclareMathOperator{\intr}{int}
+\DeclareMathOperator{\bdry}{bdry}
+\DeclareMathOperator{\rnk}{rank}
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\con}{con}
+\DeclareMathOperator{\dist}{\mathbf{dist}}
+\DeclareMathOperator{\lip}{lip}
+\DeclareMathOperator{\ran}{rge}
+\DeclareMathOperator{\hyp}{hypo}
+\DeclareMathOperator{\lev}{lev}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\relint}{relint}
+\DeclareMathOperator{\ot}{OT}
+\DeclareMathOperator{\tr}{trace}
+\DeclareMathOperator{\Div}{Div}
+\DeclareMathOperator{\spn}{span}
+\DeclareMathOperator{\id}{I}
+
+\newcommand\downto{\searrow}
+
+%% Sam's commands
+
+\def \LSE{\mathrm{LSE}}
+
+
+\begin{document}
+\title{Technical appendix to\\ \emph{Max-Min Fairness-Aware Densest Subgraph Discovery for Exploring Segregation}}
+\author{Sam Beunckens, Emmanouil Kariotakis, Aritra Konar}
+\date{}
+\maketitle
+\section{Proof of Proposition 1: the two directions of $\LSE$}
+\begin{proof}
+    \label{app:bidirectional}
+	Throughout, $h_\ell(\setA) := |\setA \cap \setS_\ell|$ is the number of vertices of group $\ell$ in $\setA$ and $\LSE(-|\setA|,\mu) := \frac{1}{\mu}\log\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)}$, so that $-\LSE$ is the soft minimum of the $h_\ell(\setA)$. The marginal gain of $-\LSE$ is:
+	\begin{equation*}
+		-r(v \mid \setA)
+		\;=\; \frac{1}{\mu}\log\!\left(
+		\frac{\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)}}
+		{\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)} \, e^{-\mu \delta_{v \in \setS_\ell}}}
+		\right)
+	\end{equation*}
+    With $v\in \setS_{\ell^\star}$, and $\delta_{v \in \setS_\ell}=1$ whenever the subscript condition holds, and zero else. Our approach now relies on considering the effect on this marginal gain, whenever the ground set $\setA$ is extended with a vertex $u \in \setS_{\ell'}$. Thus:
+    \begin{align}
+        &-r(v|\setA\cup \{u\}) - (-r(v|\setA)) =\\
+        &\frac{1}{\mu}\log\!\left(
+		\frac{\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)}e^{-\mu \delta_{u \in \setS_\ell}}}
+		{\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)} e^{-\mu \delta_{u \in \setS_\ell}} \, e^{-\mu \delta_{v \in \setS_\ell}}}
+		\right) - \frac{1}{\mu}\log\!\left(
+		\frac{\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)}}
+		{\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)} \, e^{-\mu \delta_{v \in \setS_\ell}}}
+		\right)
+    \end{align}
+     With $\beta := 1-e^{-\mu}$, the two numerators and two denominators can be rewritten as:
+    \begin{equation}
+    \label{eq:simplificationZ}
+    \begin{aligned}
+    & Z = \sum_\ell e^{-\mu h_\ell(\setA)},\\
+	\sum_{\ell} e^{-\mu h_\ell(\setA)} e^{-\mu \delta_{u \in \setS_\ell}}
+	&= Z\cdot\left(1 - \beta\, \tfrac{e^{-\mu h_{\ell'}(\setA)}}{Z}\right), \\
+	\sum_{\ell} e^{-\mu h_\ell(\setA)} e^{-\mu \delta_{v \in \setS_\ell}}
+	&= Z \cdot \left(1 - \beta\, \tfrac{e^{-\mu h_{\ell^\star}(\setA)}}{Z}\right), \\
+	\sum_{\ell} e^{-\mu h_\ell(\setA)} e^{-\mu \delta_{u \in \setS_\ell}} e^{-\mu \delta_{v \in \setS_{\ell}}}
+	&=\begin{cases}
+	    Z - \beta\, e^{-\mu h_{\ell'}(\setA)} - \beta\, e^{-\mu h_{\ell^\star}(\setA)}, & \ell'  \not= \ell^\star\\
+        	Z - (1-e^{-2\mu})\, e^{-\mu h_{\ell^\star}(\setA)},  & \ell'  = \ell^\star
+	\end{cases}  \\
+\end{aligned}
+\end{equation}
+    We now split up into 2 branches based on this condition:
+    \newline \newline \noindent
+    \textbf{Case one: $\ell' \not= \ell^\star$}\\
+    the difference of log rule, and filling in the identities from above yields:
+    \begin{align}
+        &-r(v|\setA\cup \{u\}) - (-r(v|\setA)) =\frac{1}{\mu}\log\left( \frac{(Z-\beta e^{-\mu h_{\ell'}(\setA)})(Z-\beta e^{-\mu h_{\ell^\star}(\setA)})}{Z(Z-\beta e^{-\mu h_{\ell'}(\setA)}-\beta e^{-\mu h_{\ell^\star}(\setA)})}
+        \right)
+    \end{align}
+If the fraction inside the log is greater than one, then the log of that fraction is positive, and thus the marginal gain is increasing. We calculate the difference to check whether the numerator is larger than the denominator.
+\begin{align*}
+        &(Z-\beta e^{-\mu h_{\ell'}(\setA)})(Z-\beta e^{-\mu h_{\ell^\star}(\setA)})-Z(Z-\beta e^{-\mu h_{\ell'}(\setA)}-\beta e^{-\mu h_{\ell^\star}(\setA)})\\
+        &\quad = Z^2-Z\beta e^{-\mu h_{\ell'}(\setA)}-Z\beta e^{-\mu h_{\ell^\star}(\setA)}+\beta^2e^{-\mu h_{\ell'}(\setA)} e^{-\mu h_{\ell^\star}(\setA)}\\
+        &\qquad -Z^2+Z\beta e^{-\mu h_{\ell'}(\setA)}+Z\beta e^{-\mu h_{\ell^\star}(\setA)}\\
+        &\quad = \beta^2e^{-\mu h_{\ell'}(\setA)} e^{-\mu h_{\ell^\star}(\setA)}
+    \end{align*}
+    In this last term, all factors are bigger than zero, meaning that the fraction will be larger than one. Thus the marginal gain is increasing which corresponds to the supermodular direction. \newline \newline \noindent
+    \textbf{Case two: $\ell' = \ell^\star$}
+    The difference in marginal gain now becomes:
+    \begin{align}
+        &-r(v|\setA\cup \{u\}) - (-r(v|\setA)) =\frac{1}{\mu}\log\left( \frac{(Z-\beta e^{-\mu h_{\ell'}(\setA)})(Z-\beta e^{-\mu h_{\ell^\star}(\setA)})}{Z(Z - (1-e^{-2\mu})\, e^{-\mu h_{\ell^\star}(\setA)})}
+        \right)
+    \end{align}
+    In a similar fashion, if the difference between the numerator and denominator is less than zero, the fraction will be less than 1 greater than zero. Which means that after taking the log, we can conclude that the marginal gain is decreasing, which is the submodular direction.
+Using $1-e^{-2\mu} = (1-e^{-\mu})(1+e^{-\mu}) = \beta(2-\beta)$,
+\begin{align*}
+        &(Z-\beta e^{-\mu h_{\ell^\star}(\setA)})^2-Z\bigl(Z - (1-e^{-2\mu})\, e^{-\mu h_{\ell^\star}(\setA)}\bigr)\\
+        &\quad = Z^2-2Z\beta e^{-\mu h_{\ell^\star}(\setA)}+\beta^2 e^{-2\mu h_{\ell^\star}(\setA)} -Z^2+Z\beta(2-\beta)\, e^{-\mu h_{\ell^\star}(\setA)}\\
+        &\quad = \beta^2 e^{-2\mu h_{\ell^\star}(\setA)}-Z\beta^2 e^{-\mu h_{\ell^\star}(\setA)}
+         = \beta^2 e^{-\mu h_{\ell^\star}(\setA)}\left(e^{-\mu h_{\ell^\star}(\setA)}-Z\right).
+    \end{align*}
+    This is at most zero, since $Z = \sum_\ell e^{-\mu h_\ell(\setA)} \geq e^{-\mu h_{\ell^\star}(\setA)}$, and negative as soon as $L \geq 2$.\\ \newline \noindent
+    Thus the numerator is smaller than the denominator, and with that the marginal gain is smaller. This means that the marginal gain is decreasing and thus, the submodular direction is proven. \newline \newline \noindent
+    To conclude, let $\setA \subseteq \setB \subseteq \setV\setminus\{v\}$ and add the vertices of $\setB\setminus\setA$ to $\setA$ one at a time. If $(\setB \setminus \setA)\cap \setS_{\ell^\star} = \emptyset$, every step falls under case one, so $-r(v|\setB) \geq -r(v|\setA)$ (supermodular direction). If $\setB \setminus \setA \subseteq \setS_{\ell^\star}$, every step falls under case two, so $-r(v|\setB) \leq -r(v|\setA)$ (submodular direction).
+	\end{proof}
+
+\section{The two directions of $Q_c(\setS)$}
+\label{app:Qc}
+\begin{proof}
+    consider the marginal gain of $Q_c(\setS)$ for $v\in\setS_\ell$:
+    \begin{equation}
+        Q_c(v|\setS) = |\setS \setminus \setS_\ell| = |\setS| - |\setS \cap \setS_\ell|
+    \end{equation}
+    Consider now a $u\in \setS_{\ell'}$. Adding $u$ to $\setS$ can also be categorized into two directions. if $\ell = \ell'$, then $u\in\setS_\ell$, but because the marginal gain is equal to $|\setS \setminus \setS_\ell|$, it does not grow or shrink in size, and is thus modular. if $\ell \not= \ell'$, then $\setS$ grows by one, and because $u \not \in \setS_\ell$ the marginal gain $|\setS \setminus \setS_\ell|$ grows by one.
+\end{proof}
+\section{Proof of the submodular bound for $\alpha$}
+\label{App:Ksubforalpha}
+\begin{proof}
+In the notation of the paper, $h(\setS) = \lambda K(\setS)$ with $K(\setS) := -\LSE(-|\setS|,\mu) - \alpha Q_c(\setS)$; as $\lambda \geq 0$, it suffices to show that $K$ is submodular. Consider the marginal gain for a given $v \in \setS_{\ell^\star}$:
+\begin{align}
+	K(v|\setA) &= -r(v|\setA)-\alpha\cdot Q_c(v|\setA)\\
+	&=  \frac{1}{\mu} \log\!\left(
+	\frac{\sum_{\ell=1}^{L} e^{-\mu h_{\ell}(\setA)}}
+	{\sum_{\ell=1}^{L} e^{-\mu h_{\ell}(\setA)} \, e^{-\mu \delta_{v \in \setS_{\ell^\star}}}}
+	\right) - \alpha \cdot [|\setA|-|\setA \cap \setS_{\ell^\star}|]
+\end{align}
+Consider now a vertex $u \in \setS_{\ell'}$, depending whether $u$ belongs to the same subgroup as $v$, the marginal gain will increase or decrease. To study the effect consider the difference between marginal gains $\Delta K = K(v|\setA\cup \{u\})-K(v|\setA)$. If this is decreasing, one could conclude that this is submodular. We consider 2 cases:
+\begin{enumerate}
+	\item $u$ and $v$ are the same subgroup:\\ This is noted by the condition $\ell' = \ell^\star$. In this case the marginal gain of $-r$ decreases (Section~\ref{app:bidirectional}, case two) and that of $Q_c$ does not change (Section~\ref{app:Qc}), so $K$ is submodular in this direction.
+	\item $u$ and $v$ are in different subgroups:\\
+	This, noted by the condition  $\ell' \neq \ell^\star$, where  the marginal gain of $-r$ is increasing and the marginal gain of $-\alpha Q_c$ decreasing. The question in this regime is finding values of $\alpha$ such that the marginal gain is guaranteed to not increase.
+\end{enumerate}
+Consider the marginal gain when $\ell' \neq \ell^\star$:
+\begin{align*}
+	\Delta K &=K(v \mid \setA \cup \{u\}) - K(v \mid \setA)
+	= \frac{1}{\mu}\log\!\left(
+	\frac{\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)} \, e^{-\mu \delta_{u \in \setS_{\ell}}}}
+	{\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)} \, e^{-\mu \delta_{u \in \setS_{\ell}}}\, e^{-\mu \delta_{v \in \setS_{\ell}}}}
+	\right)\\
+	&\quad - \alpha\bigl[\,|\setA| - |\setS_{\ell^\star} \cap \setA| + 1 - \delta_{\ell' = \ell^\star}\,\bigr]\\
+	&\quad - \frac{1}{\mu}\log\!\left(
+	\frac{\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)}}
+	{\sum_{\ell=1}^{L} e^{-\mu h_\ell(\setA)}\, e^{-\mu \delta_{v \in \setS_\ell}}}
+	\right)
+	+ \alpha\bigl[\,|\setA| - |\setS_{\ell^\star} \cap \setA|\,\bigr] \\[6pt]
+	&= \frac{1}{\mu}\log\!\left(
+	\frac{\bigl(\sum_{\ell} e^{-\mu h_\ell(\setA)} e^{-\mu \delta_{u \in \setS_\ell}}\bigr)
+		\cdot \bigl(\sum_{\ell} e^{-\mu h_\ell(\setA)} e^{-\mu \delta_{v \in \setS_\ell}}\bigr)}
+	{\bigl(\sum_{\ell} e^{-\mu h_\ell(\setA)} e^{-\mu \delta_{u \in \setS_\ell}} e^{-\mu \delta_{v \in \setS_\ell}}\bigr)
+		\cdot \bigl(\sum_{\ell} e^{-\mu h_\ell(\setA)}\bigr)}
+	\right)
+	- \alpha\bigl[1 - \delta_{\ell' = \ell^\star}\bigr]
+\end{align*}
+
+Where $\delta_{\ell' = \ell^\star}$ is 1 if $u$ and $v$ are in the same subgroup, and zero else. As before, $\beta := 1 - e^{-\mu}$. For $u \in \setS_{\ell'}$ and $v \in \setS_{\ell^\star}$ with $\ell' \neq \ell^\star$, the identities \eqref{eq:simplificationZ} of Section~\ref{app:bidirectional} yield:
+\begin{align*}
+	\Delta K &= \frac{1}{\mu}\log\left(\frac{Z\cdot\left(1 - \beta\, \tfrac{e^{-\mu h_{\ell^\star}(\setA)}}{Z}\right)\cdot Z \cdot \left(1 - \beta\, \tfrac{e^{-\mu h_{\ell'}(\setA)}}{Z}\right)}{Z\cdot Z\cdot \left(1 - \beta\,\frac{ e^{-\mu h_{\ell'}(\setA)}}{Z} - \beta\, \frac{e^{-\mu h_{\ell^\star}(\setA)}}{Z} \right)} \right) - \alpha\\
+	&=\frac{1}{\mu}\log\left(\frac{\left(1 - \beta\, \tfrac{e^{-\mu h_{\ell^\star}(\setA)}}{Z}\right)\cdot \left(1 - \beta\, \tfrac{e^{-\mu h_{\ell'}(\setA)}}{Z}\right)}{ \left(1- \beta\,\frac{ e^{-\mu h_{\ell'}(\setA)}}{Z} - \beta\, \frac{e^{-\mu h_{\ell^\star}(\setA)}}{Z} \right) } \right) - \alpha\\
+\end{align*}
+\noindent
+Now, the condition for submodularity is that $\Delta K \leq 0$, this means that
+\begin{equation}
+	\frac{1}{\mu}\log\left(\frac{\left(1 - \beta\, \tfrac{e^{-\mu h_{\ell^\star}(\setA)}}{Z}\right)\cdot \left(1 - \beta\, \tfrac{e^{-\mu h_{\ell'}(\setA)}}{Z}\right)}{1- \beta\,\frac{ e^{-\mu h_{\ell'}(\setA)}}{Z} - \beta\, \frac{e^{-\mu h_{\ell^\star}(\setA)}}{Z}} \right) \leq \alpha
+\end{equation}
+We will bound the first term to arrive at a value of $\alpha$:
+\begin{align*}
+	&\frac{1}{\mu}\log\left(\frac{\left(1 - \beta\, \tfrac{e^{-\mu h_{\ell^\star}(\setA)}}{Z}\right)\cdot \left(1 - \beta\, \tfrac{e^{-\mu h_{\ell'}(\setA)}}{Z}\right)}{1- \beta\,\frac{ e^{-\mu h_{\ell'}(\setA)}}{Z} - \beta\, \frac{e^{-\mu h_{\ell^\star}(\setA)}}{Z}} \right)\\
+	&= \frac{1}{\mu} \log\left(\frac{1 - \beta\, \tfrac{e^{-\mu h_{\ell^\star}(\setA)}}{Z} - \beta\, \tfrac{e^{-\mu h_{\ell'}(\setA)}}{Z} + \beta^2\cdot  \tfrac{e^{-\mu h_{\ell^\star}(\setA)}}{Z} \cdot  \tfrac{e^{-\mu h_{\ell'}(\setA)}}{Z}}{1- \beta\,\frac{ e^{-\mu h_{\ell'}(\setA)}}{Z} - \beta\, \frac{e^{-\mu h_{\ell^\star}(\setA)}}{Z}} \right)\\
+	&=\frac{1}{\mu}\log\left(1+ \frac{\beta^2\cdot  \tfrac{e^{-\mu h_{\ell^\star}(\setA)}}{Z} \cdot  \tfrac{e^{-\mu h_{\ell'}(\setA)}}{Z}}{1- \beta\,\frac{ e^{-\mu h_{\ell'}(\setA)}}{Z} - \beta\, \frac{e^{-\mu h_{\ell^\star}(\setA)}}{Z}}\right)
+\end{align*}
+ We make use of the following:
+\begin{enumerate}
+	\item[(i)] because $\sum_\ell e^{-\mu h_{\ell}(\setA)}/Z =1$, the sum $e^{-\mu h_{\ell'}(\setA)}/Z+e^{-\mu h_{\ell^\star}(\setA)}/Z \leq 1$
+	\item [(ii)] Because this $e^{-\mu h_{\ell'}(\setA)}/Z+e^{-\mu h_{\ell^\star}(\setA)}/Z \leq 1$, it holds that $e^{-\mu h_{\ell'}(\setA)}/Z\cdot e^{-\mu h_{\ell^\star}(\setA)}/Z \leq \frac{1}{4}$.
+	\item[(iii)] This sum being less than 1 allows for the following inequality that can be applied in the denominator:
+	$ 1-\beta(e^{-\mu h_{\ell'}(\setA)}/Z+e^{-\mu h_{\ell^\star}(\setA)}/Z) \geq 1-\beta$
+\end{enumerate}
+\noindent
+This loses the dependence on $Z$ and yields the following bound, only dependent on $\mu$:
+\begin{equation}
+	\Delta K \leq \frac{1}{\mu} \log \left(1+\frac{\beta^2\cdot e^{\mu}}{4}\right) - \alpha= \frac{1}{\mu} \log \left(1+\frac{(1-e^{-\mu})^2\cdot e^{\mu}}{4}\right)- \alpha \leq 0
+\end{equation}
+So for $\alpha \geq \frac{1}{\mu} \log \left(1+\frac{(1-e^{-\mu})^2\cdot e^{\mu}}{4}\right)$, is $K(\setS)$ submodular.
+\end{proof}
+
+\end{document}
